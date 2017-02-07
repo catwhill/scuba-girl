@@ -1,0 +1,1 @@
+/* Null Mbox file */
