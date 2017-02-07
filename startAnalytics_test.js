@@ -362,7 +362,9 @@ s.doPlugins=function(s){ /*Util.getQueryParam key is case sensitive. The Javascr
 				"authState":myVisitor.AuthState.AUTHENTICATED
 			}
 		});
-	} 
+	} else {
+		s.prop5="cold";
+	}
 
 // Customer ID for alias eVar38
 	if(s.eVar38){
