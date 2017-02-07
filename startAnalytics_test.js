@@ -1,3 +1,41 @@
+
+/* Sets the Analytics report suite dynamically */
+s=new AppMeasurement();
+s.account="swadev"
+
+var s=s_gi(s.account);
+
+function domainFoundInList (fDomainList, fDomainMatch) {
+    // remove "www." from the domain
+    fDomainMatch = String(fDomainMatch).replace(/^(https?:\/\/)?(www\.)?/,'')
+    // add commas around fDomainMatch so you don't accidentally get a match for "west.com"
+    fDomainMatch = "," + fDomainMatch + ",";
+
+    // if match, then return true
+    if (fDomainList.search(fDomainMatch) > -1 ) {
+        return (true);
+    }
+    return (false);
+}
+
+/* Function to collect Load Time for a prop. */
+function s_getLoadTime(){
+    if(!window.s_loadT){
+        var b=new Date().getTime(),o=window.performance?performance.timing:0,a=o?o.requestStart:window.inHeadTS||0;s_loadT=a?Math.round((b-a)/100):''
+    }return s_loadT
+}
+
+s.loadModule("AudienceManagement");
+
+
+var domainList = ",southwest.com,www.southwest.com,espanol.southwest.com,global.southwest.com,espanol.global.southwest.com,travel.southwest.com,espanoltravel.southwest.com,rapidrewardsshopping.southwest.com,swabiz.com,www.swabiz.com,espanol.swabiz.com,buy.points.com,storefront.points.com,luv.southwest.com,bbcorporate.bookingbuilder.com,download.southwest.com,luv.southwest.com,";
+var domainMatch = window.location.host;
+if (domainFoundInList (domainList, domainMatch)) {
+    s.account="swaprod";
+}
+
+// end of setting the report suite
+
 var analyticsDisabled = false;
 
 function setMemberNumber(c) {
@@ -256,17 +294,6 @@ var myVisitor = {
 
 s_getLoadTime();
 
-/* Sets the Analytics report suite dynamically */
-s=new AppMeasurement();
-s.account="swadev"
-
-var domainList = ",southwest.com,www.southwest.com,espanol.southwest.com,global.southwest.com,espanol.global.southwest.com,travel.southwest.com,espanoltravel.southwest.com,rapidrewardsshopping.southwest.com,swabiz.com,www.swabiz.com,espanol.swabiz.com,buy.points.com,storefront.points.com,luv.southwest.com,bbcorporate.bookingbuilder.com,download.southwest.com,luv.southwest.com,";
-var domainMatch = window.location.host;
-if (domainFoundInList (domainList, domainMatch)) {
-    s.account="swaprod";
-}
-
-var s=s_gi(s.account);
 
 /************************************************CONFIGURATION SECTION**************************************************************/
 s.currencyCode="USD";
@@ -295,13 +322,6 @@ s.visitor = Visitor.getInstance("65D316D751E563EC0A490D4C@AdobeOrg");
 s.server=document.domain;
 s.eVar1=s.prop1="FullSite";
 
-if (s.eVar45 > "") {
-  var state="hot";
-} else {
-  var state ="cold";
-}
-s.prop5 = state;
-
 s.prop34 = (typeof(Visitor) != "undefined" ? "VisitorAPI Present" : "VisitorAPI Missing");
 s.eVar55="D=g"
 s.prop55="D=g"
@@ -328,7 +348,10 @@ s.doPlugins=function(s){ /*Util.getQueryParam key is case sensitive. The Javascr
     s.prop4=s_getLoadTime();
 
  // Customer ID for alias eVar45 and SOuthW3st
+	
+	
 	if(s.eVar45){
+		s.prop5="hot";
 		visitor.setCustomerIDs({
 			"eVar45": {
 				"id":s.eVar45,
@@ -389,28 +412,6 @@ if (s.Util.getQueryParam("appvi")) {
 else if (s.c_r("app_vi")) {
     s.visitorID=s.c_r("app_vi");
 }
-
-function domainFoundInList (fDomainList, fDomainMatch) {
-    // remove "www." from the domain
-    fDomainMatch = String(fDomainMatch).replace(/^(https?:\/\/)?(www\.)?/,'')
-    // add commas around fDomainMatch so you don't accidentally get a match for "west.com"
-    fDomainMatch = "," + fDomainMatch + ",";
-
-    // if match, then return true
-    if (fDomainList.search(fDomainMatch) > -1 ) {
-        return (true);
-    }
-    return (false);
-}
-
-/* Function to collect Load Time for a prop. */
-function s_getLoadTime(){
-    if(!window.s_loadT){
-        var b=new Date().getTime(),o=window.performance?performance.timing:0,a=o?o.requestStart:window.inHeadTS||0;s_loadT=a?Math.round((b-a)/100):''
-    }return s_loadT
-}
-
-s.loadModule("AudienceManagement");
 
 //AppMeasurement_Module_AudienceManagement.js library file version: 6.6
 function AppMeasurement_Module_AudienceManagement(d){var a=this;a.s=d;var b=window;b.s_c_in||(b.s_c_il=[],b.s_c_in=0);a._il=b.s_c_il;a._in=b.s_c_in;a._il[a._in]=a;b.s_c_in++;a._c="s_m";a.setup=function(c){b.DIL&&c&&(c.disableDefaultRequest=!0,c.disableScriptAttachment=!0,c.disableCORS=!0,c.secureDataCollection=!1,a.instance=b.DIL.create(c),a.tools=b.DIL.tools)};a.isReady=function(){return a.instance?!0:!1};a.getEventCallConfigParams=function(){return a.instance&&a.instance.api&&a.instance.api.getEventCallConfigParams?
