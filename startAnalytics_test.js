@@ -294,11 +294,14 @@ s.visitor = Visitor.getInstance("65D316D751E563EC0A490D4C@AdobeOrg");
 /* Sets global variable values in Analytics */
 s.server=document.domain;
 s.eVar1=s.prop1="FullSite";
+
 if (s.eVar45 > "") {
-  s.prop5="hot";
+  var state="hot";
 } else {
-  s.prop5="cold";
-};
+  var state ="cold";
+}
+s.prop5 = state;
+
 s.prop34 = (typeof(Visitor) != "undefined" ? "VisitorAPI Present" : "VisitorAPI Missing");
 s.eVar55="D=g"
 s.prop55="D=g"
